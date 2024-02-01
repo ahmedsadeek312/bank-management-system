@@ -24,9 +24,10 @@ int main()
         printf("\t\t\t============================================================\n");
         printf("\t\t\t1- Create Account \n");
         printf("\t\t\t2- Deposit \n");
-        printf("\t\t\t3- withdraw \n");
+        printf("\t\t\t3- Withdraw \n");
         printf("\t\t\t4- Edit Account Details \n");
-        printf("\t\t\t5- Exit \n");
+        printf("\t\t\t5- Money Transfer To Another Account \n");
+        printf("\t\t\t6- Exit \n");
         printf("\t\t\t============================================================\n");
         printf("\t\t\tEnter your Choice : ");
         scanf("%d" , &choice);
@@ -46,13 +47,15 @@ int main()
         editAccountDetails(accounts,numAccount);
         break;
     case 5:
+        TransformMoney(accounts , numAccount);
+    case 6:
         printf("\t\t\tExiting .... \n");
         break;
     default :
         printf("\t\t\tinvalid choice !!!!!!\n");
     }
     }
-    while(choice != 5);
+    while(choice != 6);
     return 0;
 }
 
@@ -225,30 +228,43 @@ void editAccountDetails(struct Account *accounts, int numAccount){
                             default :
                                 printf("\t\t\tyou Entered invalid choice !!\n");
                                 return;
-
                             }}while(choice != 3);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void TransformMoney(struct Account *accounts, int numAccount)
+{
+    int senderID , ReceiverID;
+    float amount_to_transfer , sender_Total_money ;
+    char sender_password[100];
+    printf("\t\t\tTransfer Money \n");
+    printf("\t\t\t==============================================\n");
+    printf("\t\t\tEnter Your ID : ");
+    scanf("%d" , &senderID);
+    printf("\t\t\tEnter Your Password : ");
+    fflush(stdin);
+    fgets(sender_password , sizeof(sender_password) , stdin);
+    if(strcmp(sender_password , accounts[senderID - 1].password) != 0 || senderID != accounts[senderID - 1].account_id)
+    {
+        printf("\t\t\t==============================================\n");
+        printf("\t\t\tInvalid Data !! \n");
+        return;
+    }
+    printf("\t\t\tEnter Receiver ID ");
+    scanf("%d" , &ReceiverID);
+    if(ReceiverID > numAccount || ReceiverID == NULL || ReceiverID <= 0)
+    {
+        printf("\t\t\t==============================================\n");
+        printf("\t\t\tInvalid ID !! \n");
+    }
+    printf("\t\t\tEnter Transfer Amount : ");
+    scanf("%f" , &amount_to_transfer);
+    if(amount_to_transfer > accounts[senderID - 1].balane)
+    {
+        printf("\t\t\t==============================================\n");
+        printf("\t\t\tyou do not have Enough Money !!\n\t\t\tPlease recharge :) \n");
+    }
+    
+}
 
 
 
