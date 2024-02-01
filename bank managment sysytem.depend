@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1706717031 source:d:\study\course\problem solving\c\bank mangment system\bank managment sysytem\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
