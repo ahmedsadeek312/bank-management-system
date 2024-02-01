@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 struct Account
 {
@@ -11,7 +12,6 @@ struct Account
 };
 
 
-
 int main()
 {
     struct Account accounts[100];
@@ -19,16 +19,18 @@ int main()
     int choice ;
     do
     {
-        printf("============================================================\n");
-        printf("Welcome to Ahmed & Hisham Bank \n");
-        printf("============================================================\n");
-        printf("1- Create Account \n");
-        printf("2- Deposit \n");
-        printf("3- withdraw \n");
-        printf("4- account information \n");
-        printf("5- Exit \n");
-        printf("Enter your Choice : ");
+        printf("\t\t\t============================================================\n");
+        printf("\t\t\t\t      Welcome to Ahmed & Hisham Bank \n");
+        printf("\t\t\t============================================================\n");
+        printf("\t\t\t1- Create Account \n");
+        printf("\t\t\t2- Deposit \n");
+        printf("\t\t\t3- withdraw \n");
+        printf("\t\t\t4- Edit Account Details \n");
+        printf("\t\t\t5- Exit \n");
+        printf("\t\t\t============================================================\n");
+        printf("\t\t\tEnter your Choice : ");
         scanf("%d" , &choice);
+        printf("\t\t\t============================================================\n");
     switch(choice)
     {
     case 1:
@@ -41,13 +43,13 @@ int main()
         withdraw(accounts ,numAccount);
         break;
     case 4:
-        accountInformation(accounts,numAccount);
+        editAccountDetails(accounts,numAccount);
         break;
     case 5:
-        printf("Exiting .... \n");
+        printf("\t\t\tExiting .... \n");
         break;
     default :
-        printf("invalid choice !!!!!!\n");
+        printf("\t\t\tinvalid choice !!!!!!\n");
     }
     }
     while(choice != 5);
@@ -56,44 +58,64 @@ int main()
 
 void createAccount(struct Account *accounts ,int *numAccount )
 {
+    printf("\t\t\t\t\t     Create Account \n");
+    printf("\t\t\t============================================================\n");
     fflush(stdin);
-    printf("Enter your name : ");
+    printf("\t\t\tEnter your name : ");
     fgets(accounts[*numAccount].name, sizeof(accounts[*numAccount].name), stdin);
     fflush(stdin);
-    printf("Enter your Password : ");
+    printf("\t\t\tEnter your Password : ");
     fgets(accounts[*numAccount].password, sizeof(accounts[*numAccount].password), stdin);
-    if(accounts[*numAccount].password == NULL)
+    if(accounts[*numAccount].password == NULL || strlen(accounts[*numAccount].password) <= 1 )
     {
-        printf("you Entered invalid password !!");
+        printf("\t\t\t============================================================\n");
+        printf("\t\t\tyou Entered invalid password !! \nTry Again :( \n");
         return;
     }
-    printf(" Password created !! \n");
-    printf("Enter your initial balance : ");
+    printf("\t\t\twait for creating your account ....\n");
+    sleep(1.5);
+    printf("\t\t\tAccount created !! \n");
+    printf("\t\t\tEnter your initial balance : ");
     scanf("%f" ,&accounts[*numAccount].balane );
     accounts[*numAccount].account_id = *numAccount +1;
-    printf("Account Created Successfully !! \nyour ID is : %d \n" , accounts[*numAccount].account_id);
+    printf("\t\t\tAdding your money ");
+    for(int x = 0 ; x <4 ; x++)
+    {
+        printf(".");
+        sleep(1);
+    }
+    printf(".\n");
+    printf("\t\t\t============================================================\n");
+    printf("\t\t\tAccount Created Successfully :) Thank you For using A&H Bank \n\t\t\tyour ID is : %d\n\t\t\tyour balance is : %0.2f EGP\n" , accounts[*numAccount].account_id , accounts[*numAccount].balane);
+    printf("\t\t\tDo not Forget Your Password !! \n");
     (*numAccount) += 1 ;
+    sleep(2);
 }
 
 void Deposit(struct Account *accounts ,int numAccount )
 {
+    printf("\t\t\t\t\t\t Deposit \n");
+    printf("\t\t\t============================================================\n");
     int accountNumber;
     float amount;
-    printf("Enter your Id : ");
+    printf("\t\t\tEnter your Id : ");
     scanf("%d" ,&accountNumber );
     if(accountNumber <= 0 || accountNumber > numAccount || accountNumber == NULL )
     {
-        printf("you Entered invalid ID ): !! \n");
+        printf("\t\t\tyou Entered invalid ID ): !! \n");
         return;
     }
 
-    printf("welcome %s" , accounts[accountNumber - 1].name);
-    printf("Enter your Amount : ");
+    printf("\t\t\t\t\t     welcome %s" , accounts[accountNumber - 1].name);
+    printf("\t\t\tEnter your Amount : ");
     scanf("%f" , &amount);
     accounts[accountNumber - 1 ].balane += amount;
-    printf("you deposit successfully !!\n");
-    printf("your current balance is = %0.2f \n", accounts[accountNumber - 1].balane);
 
+    printf("\t\t\tAdding your Money ....\n");
+    sleep(1);
+    printf("\t\t\tyour money deposited successfully :) \n");
+    printf("\t\t\tyour current balance is = %0.2f EGP \n", accounts[accountNumber - 1].balane);
+    sleep(2);
 }
 
 void withdraw(struct Account *accounts , int numAccount)
@@ -101,62 +123,136 @@ void withdraw(struct Account *accounts , int numAccount)
     int user_input_id ;
     char user_input_password[100];
     float amount ;
-    printf("Now i will check if you a Bank robber :) \n");
-    printf("Enter your ID : ");
+    printf("\t\t\t\t\t\t Withdraw \n");
+    printf("\t\t\t\tNow i will check if you a Bank robber :) \n");
+    printf("\t\t\t============================================================\n");
+    printf("\t\t\tEnter your ID : ");
     scanf("%d", &user_input_id );
 
     if(user_input_id == NULL || user_input_id > numAccount || user_input_id <= 0)
     {
-        printf("Wrong ID !! ): !! \nI Got You Robber !!\n");
+        printf("\t\t\tWrong ID !! ): !! \n\t\t\tI Got You Robber !!\n");
         return ;
     }
 
     fflush(stdin);
-    printf("Enter Account password : ");
+    printf("\t\t\tEnter Account password : ");
     fgets(user_input_password, sizeof(user_input_password), stdin);
 
     if (strcmp(user_input_password, accounts[user_input_id - 1 ].password) != 0)
     {
-        printf("Access denied. Incorrect password!\nI Got You Robber !! :) \n");
+        printf("\t\t\tAccess denied. Incorrect password!\n\t\t\tI Got You Robber !! :) \n");
         return;
     }
 
-    printf("welcome %s " , accounts[user_input_id - 1].name);
-    printf("Enter your withdraw amount : ");
+    printf("\t\t\t\t\t     welcome %s" , accounts[user_input_id - 1].name);
+    printf("\t\t\tEnter your withdraw amount : ");
     scanf("%f" , &amount);
+    printf("\t\t\tPlease wait");
+    for(int i = 0 ; i < 4 ; i++ )
+    {
+        printf(".");
+        sleep(1);
+    }
+    printf("\n");
     if(amount > accounts[user_input_id - 1 ].balane)
     {
-        printf("you do not have enough money in your account !! \n");
+        printf("\t\t\tyou do not have enough money in your account !! \n");
         return;
     }
-    printf("your amount is successfully withdraw !! \n");
+    printf("\t\t\tyour amount is successfully withdraw !! \n");
     accounts[user_input_id - 1 ].balane -= amount;
-    printf("your current money is : %0.2f  \n" ,accounts[user_input_id - 1 ].balane );
+    printf("\t\t\tyour current money is : %0.2f EGP \n" ,accounts[user_input_id - 1 ].balane );
+    printf("\t\t\tExiting To The Main List ");
+    for(int i = 0 ; i < 4 ; i++)
+    {
+        printf(".");
+        sleep(1);
+    }
+    printf("\n");
 }
 
-void accountInformation(struct Account *accounts, int numAccount){
+void editAccountDetails(struct Account *accounts, int numAccount){
         int user_inPut_id;
+        char user_edit_password[100];
+        int choice;
         char user_inPut_password[100];
-        printf("Enter your ID :");
+        printf("\t\t\tEnter your ID : ");
         scanf("%d",&user_inPut_id);
         if ((user_inPut_id == NULL) || (user_inPut_id  > numAccount ) || (user_inPut_id <=0 )){
-           printf("Wrong ID !! ): !! \nI Got You Robber !!\n");
+           printf("\t\t\tWrong ID !! ): \n\t\t\tI Got You Robber !!\n");
            return ;
         }
 
         fflush(stdin);
-        printf("Pleas Enter your password :) ");
+        printf("\t\t\tEnter your password : ");
         fgets(user_inPut_password,sizeof(user_inPut_password),stdin);
-
         if(strcmp(user_inPut_password , accounts[user_inPut_id - 1].password)!=0)
         {
-            printf("Access denied. Incorrect password!\nI Got You Robber !! :) \n");
+            printf("\t\t\tAccess denied. Incorrect password!\n\t\t\tI Got You Robber !! :) \n");
             return;
         }
-        else{
-            printf("welcome :) %s",accounts[user_inPut_id - 1 ].name);
-            printf("your amount is : %0.2f \n",accounts[user_inPut_id - 1 ].balane);
-            printf("your ID : %d \n",accounts[user_inPut_id - 1 ].account_id);
-            return;
-        }
+            printf("\t\t\twelcome :) %s",accounts[user_inPut_id - 1 ].name);
+            printf("\t\t\tyour Money is : %0.2f EGP \n",accounts[user_inPut_id - 1 ].balane);
+            printf("\t\t\tyour ID : %d \n",accounts[user_inPut_id - 1 ].account_id);
+            do
+                {
+                    printf("\t\t\t==============================================\n");
+                    printf("\t\t\t1- edit user name \n");
+                    printf("\t\t\t2- edit password \n");
+                    printf("\t\t\t3- main list \n");
+                    printf("\t\t\tenter your choice : ");
+                    scanf("%d" , &choice);
+                    switch(choice)
+                        {
+                            case 1:
+                                fflush(stdin);
+                                printf("\t\t\tEnter your New user Name : ");
+                                fgets(accounts[user_inPut_id - 1 ].name , sizeof(accounts[user_inPut_id - 1 ].name), stdin);
+                                printf("\t\t\tuser name Changed Correctly !!\n");
+                                break;
+                            case 2:
+                                fflush(stdin);
+                                printf("\t\t\tenter your new password : ");
+                                fgets(accounts[user_inPut_id - 1 ].password , sizeof(accounts[user_inPut_id - 1 ].password) , stdin);
+                                printf("\t\t\tpassword Changed correctly !! \n");
+                                break;
+                            case 3:
+                                printf("\t\t\tExiting....\n");
+                                sleep(3);
+                                break;
+
+                            default :
+                                printf("\t\t\tyou Entered invalid choice !!\n");
+                                return;
+
+                            }}while(choice != 3);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
