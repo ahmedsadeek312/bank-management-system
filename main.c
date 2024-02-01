@@ -47,7 +47,7 @@ int main()
         editAccountDetails(accounts,numAccount);
         break;
     case 5:
-        TransformMoney(accounts , numAccount);
+        TransferMoney(accounts , numAccount);
     case 6:
         printf("\t\t\tExiting .... \n");
         break;
@@ -101,15 +101,19 @@ void Deposit(struct Account *accounts ,int numAccount )
     printf("\t\t\t============================================================\n");
     int accountNumber;
     float amount;
+    char user_password[100];
     printf("\t\t\tEnter your Id : ");
     scanf("%d" ,&accountNumber );
-    if(accountNumber <= 0 || accountNumber > numAccount || accountNumber == NULL )
+    printf("\t\t\tEnter your Password : ");
+    fflush(stdin);
+    fgets(user_password,sizeof(user_password),stdin);
+    if(accountNumber <= 0 || accountNumber > numAccount || accountNumber == NULL|| strcmp(user_password,accounts[accountNumber -1].password)!=0 )
     {
-        printf("\t\t\tyou Entered invalid ID ): !! \n");
+        printf("\t\t\tyou Entered Invalid Data ): !! \n");
         return;
     }
 
-    printf("\t\t\t\t\t     welcome %s" , accounts[accountNumber - 1].name);
+    printf("\t\t\t\t\t welcome %s" , accounts[accountNumber - 1].name);
     printf("\t\t\tEnter your Amount : ");
     scanf("%f" , &amount);
     accounts[accountNumber - 1 ].balane += amount;
@@ -231,7 +235,7 @@ void editAccountDetails(struct Account *accounts, int numAccount){
                             }}while(choice != 3);
 }
 
-void TransformMoney(struct Account *accounts, int numAccount)
+void TransferMoney(struct Account *accounts, int numAccount)
 {
     int senderID , ReceiverID;
     float amount_to_transfer , sender_Total_money ;
@@ -249,12 +253,13 @@ void TransformMoney(struct Account *accounts, int numAccount)
         printf("\t\t\tInvalid Data !! \n");
         return;
     }
-    printf("\t\t\tEnter Receiver ID ");
+    printf("\t\t\tEnter Receiver ID : ");
     scanf("%d" , &ReceiverID);
     if(ReceiverID > numAccount || ReceiverID == NULL || ReceiverID <= 0)
     {
         printf("\t\t\t==============================================\n");
         printf("\t\t\tInvalid ID !! \n");
+        return ;
     }
     printf("\t\t\tEnter Transfer Amount : ");
     scanf("%f" , &amount_to_transfer);
@@ -262,10 +267,21 @@ void TransformMoney(struct Account *accounts, int numAccount)
     {
         printf("\t\t\t==============================================\n");
         printf("\t\t\tyou do not have Enough Money !!\n\t\t\tPlease recharge :) \n");
+        return ;
     }
-    
+    accounts[senderID - 1 ].balane -=amount_to_transfer ;
+    accounts[ReceiverID - 1 ].balane += amount_to_transfer;
+    printf("\t\t\t==============================================\n");
+    printf("\t\t\tPlease Wait\n");
+    for( int i=0; i < 4 ; i++)
+        {
+            printf(".");
+            sleep(1);
+        }
+        printf("\t\t\tYour Money transfered successfully :) \n");
+        printf("\t\t\tYour Amount is %0.2f \n",accounts[senderID -1].balane);
+        sleep(2);
 }
-
 
 
 
